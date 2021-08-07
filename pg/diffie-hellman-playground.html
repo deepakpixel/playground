@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Playground | Diffie-Hellman & E2E encryption</title>
+  <link rel="stylesheet" type="text/css" href="./dh/style.css">
+</head>
+
+<body>
+  <section id="main-container" class="step-1">
+    <h1>Diffie-Hellman & E2E encryption</h1>
+    <p>This is a Diffie-Hellman playground. The table below simulates the Diffie-Hellman key exchange. I
+      have tried to keep it minimal and interactive (atleast I learned something from codeforces xd). If anyone wants to
+      add styles or want to improve something feel free to make a PR. Remember no ReactJS.</p>
+    <p>Checkout the full post on <a href="https://blog.deepakjangra.com" target="_blank">my blog
+        (blog.deepakjangra.com)</a></p>
+    <div class="instructions">
+      <h2>Diffie-Hellman - Here's how it works </h2>
+      <ol>
+        <li>Alice generates private secret</li>
+        <li>Bob generates private secret</li>
+        <li>Alice calculates her public token</li>
+        <li>Bob calculates his public token</li>
+        <li>Exchange public secrets over public network</li>
+        <li>Alice computes shared token</li>
+        <li>Bob computes shared token</li>
+        <li>Compare tokens if you wish and that's it</li>
+      </ol>
+    </div>
+    <div class="dh-table">
+      <table>
+        <thead>
+
+          <th class="alice">Alice's device</th>
+          <th class="public">Public network</th>
+          <th class="bob">Bob's device</th>
+        </thead>
+        <tbody>
+
+          <tr>
+            <td>
+              <div>
+                <div>
+                  <button class="button-1" onclick="generateAliceSecret()">Generate Alice's secret</button>
+                </div>
+                <div class="bold">Alice secret (a):</div>
+                <div class="number alicesecret" id="alicesecret">
+                  Not generated yet
+                </div>
+                <div>
+                  <span class="anchor" onclick="showHide('alicesecret')">Show/hide Alice's secret</span>
+                </div>
+              </div>
+            </td>
+            <td>
+              <div>
+                <div>
+                  3072-bit MODP Group 15
+                </div>
+                <div class="bold">Large hexadecimal prime (n):</div>
+                <div class="number prime" id="primenumber">
+                  ffffffffffffffffc90fdaa22168c234c4c6628b80dc1cd129024e088a67cc74020bbea63b139b22514a08798e3404ddef9519b3cd3a431b302b0a6df25f14374fe1356d6d51c245e485b576625e7ec6f44c42e9a637ed6b0bff5cb6f406b7edee386bfb5a899fa5ae9f24117c4b1fe649286651ece45b3dc2007cb8a163bf0598da48361c55d39a69163fa8fd24cf5f83655d23dca3ad961c62f356208552bb9ed529077096966d670c354e4abc9804f1746c08ca18217c32905e462e36ce3be39e772c180e86039b2783a2ec07a28fb5c55df06f4c52c9de2bcbf6955817183995497cea956ae515d2261898fa051015728e5a8aaac42dad33170d04507a33a85521abdf1cba64ecfb850458dbef0a8aea71575d060c7db3970f85a6e1e4c7abf5ae8cdb0933d71e8c94e04a25619dcee3d2261ad2ee6bf12ffa06d98a0864d87602733ec86a64521f2b18177b200cbbe117577a615d6c770988c0bad946e208e24fa074e5ab3143db5bfce0fd108e4b82d120a93ad2caffffffffffffffff
+                </div>
+                <div>
+                  <span class="anchor" onclick="showHide('primenumber')">Show/hide prime</span>
+                </div>
+                <div>
+                  <span class="bold">Generator (g)</span>
+                </div>
+                <div class="number prime" id="primenumber">
+                  2
+                </div>
+
+              </div>
+            </td>
+            <td>
+              <div>
+                <div>
+                  <button class="button-2" onclick="generateBobSecret()">Generate Bob's secret</button>
+                </div>
+                <div class="bold">Bob's secret (b):</div>
+                <div class="number bobsecret" id="bobsecret">
+                  Not generated yet
+                </div>
+                <div>
+                  <span class="anchor" onclick="showHide('bobsecret')">Show/hide Bob's secret</span>
+                </div>
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <div>
+                <div>
+                  <button class="button-3" onclick="calcAlicePublic()">Calculate Alice's public key</button>
+                </div>
+                <div class="bold">Alice's public key (g <sup>a</sup> mod n):</div>
+                <div class="number alicepublic" id="alicepublic">
+                  Not generated yet
+                </div>
+                <div>
+                  <span class="anchor" onclick="showHide('alicepublic')">Show/hide Alice's public key</span>
+                </div>
+              </div>
+            </td>
+
+            <td>
+            </td>
+
+            <td>
+              <div>
+                <div>
+                  <button class="button-4" onclick="calcBobPublic()">Calculate Bob's public key</button>
+                </div>
+                <div class="bold">Bob's public key (g <sup>b</sup> mod n):</div>
+                <div class="number bobpublic" id="bobpublic">
+                  Not generated yet
+                </div>
+                <div>
+                  <span class="anchor" onclick="showHide('bobpublic')">Show/hide Bob's public key</span>
+                </div>
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+            </td>
+
+            <td>
+              <div><button onclick="exchangeKeys()" class="button-5">Exchange public keys</button></div>
+              <div>Make key exchange to get each other's public keys. This will expose public keys to public network.
+                But through these keys it's impossible to calculate secret keys for the interceptor.</div>
+            </td>
+
+            <td>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              Alice received Bob's public key
+            </td>
+
+            <td>
+              <div>Public keys exchanged</div>
+              <div>Alice's public key exposed</div>
+              <div>Bob's public key exposed</div>
+            </td>
+
+            <td>
+              Bob received Alice's public key
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <div>
+                <div>
+                  <button class="button-6" onclick="aliceComputeSharedSecret()">Compute shared secret</button>
+                </div>
+                <div class="bold">Shared secret</div>
+                <div>(g<sup>b</sup> mod n)<sup>a</sup> mod n)
+                </div>
+                or
+                <div class="bold">g<sup>ab</sup>mod n</div>
+
+                <div class="number alicesharedsecret" id="alicesharedsecret">
+                  Not generated yet
+                </div>
+                <div>
+                  <span class="anchor" onclick="showHide('alicesharedsecret')">Show/hide secret</span>
+                </div>
+              </div>
+            </td>
+
+            <td>
+              <div><button class="button-8" onclick="compareSharedSecret()">Compare shared secret</button></div>
+              <div id="result"></div>
+            </td>
+
+            <td>
+              <div>
+                <div>
+                  <button class="button-7" onclick="bobComputeSharedSecret()">Compute shared secret</button>
+                </div>
+                <div class="bold">Shared secret</div>
+                <div>(g<sup>a</sup> mod n)<sup>b</sup> mod n)
+                </div>
+                or
+                <div class="bold">g<sup>ba</sup>mod n</div>
+
+                <div class="number bobsharedsecret" id="bobsharedsecret">
+                  Not generated yet
+                </div>
+                <div>
+                  <span class="anchor" onclick="showHide('bobsharedsecret')">Show/hide secret</span>
+                </div>
+              </div>
+            </td>
+
+          </tr>
+
+        </tbody>
+
+
+      </table>
+
+
+    </div>
+  </section>
+
+  <footer>
+    <a href="./e2ee-playground.html">Try out E2EE Messaging playground</a>
+  </footer>
+
+  <script src="./dh/script.js"></script>
+</body>
+
+</html>

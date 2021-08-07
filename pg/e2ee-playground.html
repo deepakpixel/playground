@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Playground | Diffie-Hellman & E2E encryption</title>
+  <link rel="stylesheet" type="text/css" href="./e2ee/style.css">
+</head>
+
+<body>
+  <section id="main-container" class="step-1">
+    <h1>E2E Encrypted messaging</h1>
+    <p>This is a endd to end encrypted messaging playground. The table below simulates the E2EE messaging. Again minimal
+      UI feel free to throw in some styles.</p>
+
+    <p>I would suggest checking <a href="./diffie-hellman-playground.html">Diffie-Hellman key exchange
+        playground</a>
+      before proceeding</p>
+    <p>Checkout the full post on <a href="https://blog.deepakjangra.com" target="_blank">my blog
+        (blog.deepakjangra.com)</a></p>
+    <div class="instructions">
+      <h2>E2EE - Send a message </h2>
+      <ol>
+        <li>Establish shared secret</li>
+        <li>Alice encrypts message</li>
+        <li>Alice sends the message to Bob</li>
+        <li>Bob receives the message</li>
+        <li>Bob decrypts the message</li>
+      </ol>
+    </div>
+    <div class="dh-table">
+      <table>
+        <thead>
+
+          <th class="alice">Alice's device</th>
+          <th class="public">Public network</th>
+          <th class="bob">Bob's device</th>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <div>
+                <div class="bold">Shared secret</div>
+                <div>(g<sup>b</sup> mod n)<sup>a</sup> mod n)
+                </div>
+                or
+                <div class="bold">g<sup>ab</sup>mod n</div>
+
+                <div class="number alicesharedsecret" id="alicesharedsecret">
+                  Not generated yet
+                </div>
+                <div>
+                  <span class="anchor" onclick="showHide('alicesharedsecret')">Show/hide secret</span>
+                </div>
+              </div>
+            </td>
+
+            <td>
+              <div>
+                <button class="button-1" onclick="establishSharedSecret()">Establish shared secret</button>
+              </div>
+              <div>Refer <a href="./diffie-hellman-playground.html">Diffie-Hellman key exchange</a></div>
+              <div id="step-1-result"></div>
+            </td>
+
+            <td>
+              <div>
+                <div class="bold">Shared secret</div>
+                <div>(g<sup>a</sup> mod n)<sup>b</sup> mod n)
+                </div>
+                or
+                <div class="bold">g<sup>ba</sup>mod n</div>
+
+                <div class="number bobsharedsecret" id="bobsharedsecret">
+                  Not generated yet
+                </div>
+                <div>
+                  <span class="anchor" onclick="showHide('bobsharedsecret')">Show/hide secret</span>
+                </div>
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <label for="alicemessage">Message:</label>
+              <div>
+                <textarea type="text" id="alicemessage" placeholder="Alice's message">Hello Bob!</textarea>
+              </div>
+              <div>
+                <button class="button-2" onclick="encryptAliceMessage()">Encrypt message</button>
+              </div>
+              <div class="bold">Encrypted message:</div>
+              <div class="number encryptedmessage" id="encryptedmessage">
+                Not encrypted yet
+              </div>
+
+            </td>
+            <td>
+              <button class="button-3" onclick="sendMessageToBob()">Send message to Bob</button>
+            </td>
+            <td>
+            </td>
+          </tr>
+
+
+          <tr>
+            <td>
+            </td>
+            <td>
+              <div>
+                Encrypted message exposed
+              </div>
+            </td>
+            <td>
+              <div class="bold">Message received:</div>
+              <div class="number receivedmessage" id="receivedmessage">
+                Not received yet
+              </div>
+              <div>
+                <button class="button-5" onclick="decryptAliceMessage()">Decrypt message</button>
+              </div>
+              <div class="bold">Decrypted message:</div>
+              <div>
+                <textarea type="text" id="decryptedmessage" placeholder="Decrypted message">Not decrypted yet</textarea>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+
+
+      </table>
+
+
+    </div>
+  </section>
+
+  <footer>
+    <a href="./diffie-hellman-playground.html">Try out Diffie-Hellman key exchange</a> to establish a secure shared
+    secret
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
+  <script src="./e2ee/script.js"></script>
+</body>
+
+</html>
