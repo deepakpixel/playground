@@ -1,7 +1,7 @@
 [![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/deepakpixel/playgrounds/blob/master/LICENSEs)
 [![Github](https://img.shields.io/github/followers/deepakpixel?style=social)](https://github.com/deepakpixel/)
 
-# Playgrounds
+# Playground
 
 Ever heard of open-source Playground? Yes, it exists for real. Developers play here.
 
